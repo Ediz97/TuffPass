@@ -1,6 +1,7 @@
 <script>
+	import NewAccount from "./lib/NewAccount.svelte";
 </script>
 
 <main>
-	<button class="btn btn-secondary" on:click="{() => alert('Hello')}">Click me</button>
+	<NewAccount />
 </main>
