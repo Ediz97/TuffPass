@@ -26,7 +26,18 @@
 <input type="checkbox" id="new-account" class="modal-toggle" />
 <label for="new-account" class="modal cursor-pointer">
   <label class="modal-box relative" for="">
-    <h3 class="text-lg font-bold">Congratulations random Internet user!</h3>
-    <p class="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+    <div class="form-control w-full max-w-xs">
+      <!-- svelte-ignore a11y-label-has-associated-control -->
+      <label class="label">
+        <span class="label-text">User ID:</span>
+      </label>
+      <input type="text" placeholder="Type here" class="input input-bordered w-full" />
+      <!-- svelte-ignore a11y-label-has-associated-control -->
+      <label class="label">
+        <span class="label-text">Password:</span>
+      </label>
+      <input type="text" placeholder="Type here" class="input input-bordered w-full" />
+      <button class="btn btn-primary mt-3 w-min">Generate Password</button>
+    </div>
   </label>
 </label>

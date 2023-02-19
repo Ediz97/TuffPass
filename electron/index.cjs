@@ -5,7 +5,11 @@ app.whenReady().then(main);
 
 function main() {
     const win = new BrowserWindow({
-        width: 800, height: 600, show: false,
+        width: 800, 
+        height: 600, 
+        minWidth: 400,
+        minHeight: 300,
+        show: false,
         autoHideMenuBar: true,
         webPreferences: {
             preload: join(__dirname, "preload.js"),
