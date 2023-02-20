@@ -1,5 +1,5 @@
 <script>
-
+    let password = "";
 </script>
 
 <!-- The New Account Button -->
@@ -36,8 +36,24 @@
       <label class="label">
         <span class="label-text">Password:</span>
       </label>
-      <input type="text" placeholder="Type here" class="input input-bordered w-full" />
-      <button class="btn btn-primary mt-3 w-min">Generate Password</button>
+      <input type="text" placeholder="Type here" class="input input-bordered w-full" bind:value={password} />
+      <button class="btn btn-primary w-min mt-3">Generate Password</button>
+      {#if password.length === 0}
+        <progress class="progress w-full mt-3" value="0" max="100"></progress>
+        <p class="text-xs ml-0.5"><br></p>
+      {:else if password.length <= 3}
+        <progress class="progress progress-error w-full mt-3" value="25" max="100"></progress>
+        <p class="text-xs text-error ml-0.5">Weak</p>
+      {:else if password.length > 3 && password.length <= 6}
+        <progress class="progress progress-warning w-full mt-3" value="50" max="100"></progress>
+        <p class="text-xs text-warning ml-0.5">Medium</p>
+      {:else if password.length > 6 && password.length <= 9}
+        <progress class="progress progress-info w-full mt-3" value="75" max="100"></progress>
+        <p class="text-xs text-info ml-0.5">Strong</p>
+      {:else}
+        <progress class="progress progress-success w-full mt-3" value="100" max="100"></progress>
+        <p class="text-xs text-success ml-0.5">Very Strong</p>
+      {/if}
     </div>
   </label>
 </label>
