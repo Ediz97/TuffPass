@@ -5,10 +5,10 @@ app.whenReady().then(main);
 
 function main() {
     const win = new BrowserWindow({
-        width: 800, 
-        height: 600, 
-        minWidth: 400,
-        minHeight: 300,
+        width: 1200, 
+        height: 800, 
+        minWidth: 600,
+        minHeight: 400,
         show: false,
         autoHideMenuBar: true,
         webPreferences: {
