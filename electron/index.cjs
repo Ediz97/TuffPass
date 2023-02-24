@@ -10,11 +10,13 @@ function main() {
         minWidth: 600,
         minHeight: 400,
         show: false,
-        autoHideMenuBar: true,
+        autoHideMenuBar: false,
         webPreferences: {
             preload: join(__dirname, "preload.js"),
         },
     });
+
+    win.webContents.openDevTools();
 
     win.loadFile(join(__dirname, "../public/index.html"));
     win.on("ready-to-show", win.show);
