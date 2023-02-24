@@ -17,7 +17,7 @@
           <h2 class="card-title">{account.cardName}</h2>
           <p>{account.accountID}</p>
           <div class="card-actions justify-end">
-            <button class="btn btn-circle btn-primary"
+            <button class="btn btn-circle btn-primary" on:click={() => navigator.clipboard.writeText(account.password)}
               >{@html "&#128203;"}</button
             >
           </div>
