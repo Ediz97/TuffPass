@@ -4,12 +4,11 @@
   let newAccountInfo = {
     cardName: "",
     accountID: "",
-    password: ""
+    password: "",
   }
 
   function saveAccount() {
-    accounts.update((otherAccounts) => [...otherAccounts, {cardName: newAccountInfo.cardName, accountID: newAccountInfo.accountID, password: newAccountInfo.password}]);
-    console.log($accounts);
+    accounts.update((otherAccounts) => [...otherAccounts, {cardName: newAccountInfo.cardName, accountID: newAccountInfo.accountID, password: newAccountInfo.password, visible: true}]);
   }
   
 </script>
@@ -48,7 +47,7 @@
       </label>
       <input
         type="text"
-        placeholder="Type here"
+        placeholder="Enter name"
         bind:value={newAccountInfo.cardName}
         class="input input-bordered w-full"
       />
@@ -59,7 +58,7 @@
       </label>
       <input
         type="text"
-        placeholder="Type here"
+        placeholder="Enter account ID"
         bind:value={newAccountInfo.accountID}
         class="input input-bordered w-full"
       />
@@ -70,7 +69,7 @@
       </label>
       <input
         type="text"
-        placeholder="Type here"
+        placeholder="Enter password"
         bind:value={newAccountInfo.password}
         class="input input-bordered w-full"
       />
