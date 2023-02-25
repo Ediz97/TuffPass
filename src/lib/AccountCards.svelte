@@ -2,10 +2,10 @@
   import { accounts } from "./stores";
 </script>
 
-<div class="grid grid-cols-2 gap-5 lg:grid-cols-3">
+<div class="grid md:grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-4">
   {#each $accounts as account}
     {#if account.visible}
-      <div class="card card-side bg-base-300 shadow-xl p-5">
+      <div class="card card-side bg-base-300 shadow-xl p-5 border-solid border-primary border-2 border-spacing-3">
         <figure class="w-full h-full flex justify-center align-middle">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path
