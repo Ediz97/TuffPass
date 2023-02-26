@@ -5,16 +5,26 @@
     cardName: "",
     accountID: "",
     password: "",
+    iconPath: ""
   }
 
   function saveAccount() {
-    accounts.update((otherAccounts) => [...otherAccounts, {cardName: newAccountInfo.cardName, accountID: newAccountInfo.accountID, password: newAccountInfo.password, visible: true}]);
+    accounts.update((otherAccounts) => [...otherAccounts, {cardName: newAccountInfo.cardName, accountID: newAccountInfo.accountID, password: newAccountInfo.password, visible: true, iconPath: newAccountInfo.iconPath}]);
   }
   
+  function resetModal() {
+    newAccountInfo = {
+      cardName: "",
+      accountID: "",
+      password: "",
+      iconPath: ""
+    }
+  }
 </script>
 
 <!-- The New Account Button -->
-<div
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div on:click={resetModal}
   class="tooltip tooltip-left sm:tooltip-top fixed right-[5vw] bottom-[5vh]"
   data-tip="New Account"
 >
@@ -113,6 +123,7 @@
         <label for="new-account" class="btn btn-error">Cancel</label>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <label for="new-account" on:click={saveAccount} class="btn btn-success">Confirm</label>
-    </div>
+      </div>
+      <button class="btn btn-primary" on:click={async () => newAccountInfo.iconPath = await window.electronAPI.selectIcon()}>ICON</button>
   </div>
 </div>

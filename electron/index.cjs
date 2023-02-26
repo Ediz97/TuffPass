@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { join } = require('path');
 
 app.whenReady().then(main);
@@ -16,8 +16,23 @@ function main() {
         },
     });
 
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 
     win.loadFile(join(__dirname, "../public/index.html"));
     win.on("ready-to-show", win.show);
 }
+
+ipcMain.handle('selectIcon', () => {
+    return dialog.showOpenDialogSync({
+        title: 'Select Account Icon',
+        filters: [{ name: 'Icons (png, jpg, jpeg, svg, ico, icns, gif)', extensions: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'icns', 'gif']}],
+        properties: [
+            'openFile',
+        ]
+    });
+    // if (canceled) {
+    //     return;
+    // } else {
+    //     return filePath;
+    // }
+});
