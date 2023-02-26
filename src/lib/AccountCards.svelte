@@ -2,18 +2,19 @@
   import { accounts } from "./stores";
 </script>
 
-<div class="grid md:grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-4">
+<!-- <div class="container grid gap-5 auto-cols-min"> -->
+  <div class="container mx-auto gap-5 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 4xl:grid-cols-8 5xl:grid-cols-8 6xl:grid-cols-9 7xl:grid-cols-10" style="column-width: 400px;">
   {#each $accounts as account}
     {#if account.visible}
-      <div class="card card-side bg-base-300 shadow-xl p-5 border-solid border-primary border-2 border-spacing-3">
-        <figure class="w-full h-full flex justify-center align-middle">
+      <div class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden">
+        <div class="h-full flex justify-center items-center" style="min-width: 100px;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path
               d="M22.863,13.564c-0.053,0.131-0.27,1.67-1.504,1.746c-0.654,0.04-1.321-0.481-1.235-1.416	c0.153-1.673,0.632-1.135,0.277-2.92c-0.229-1.152-0.528-1.449-0.246-2.323C20.353,8.039,21.521,7.925,22,6.212l0,0	c-1.686,0.37-3.219,0.842-4.214,0.223c-0.824-0.513-1.29-1.282-0.818-2.092c0.227-0.391,1.238-0.787,1.898-1.224	c1.57-1.04,0.894-3.65,0.521-2.928c-0.704,1.365-2.242,1.284-4.125,1.318c-1.027,0.135-0.89,1.609-1.918,1.781	c-1.027,0.171-1.678-0.514-2.26-0.205c-0.582,0.308-0.685,2.602-1.644,2.602c-0.959,0-1.727-0.232-1.609-1.233	C7.922,3.67,7.541,3.119,6.315,2.581c-0.314-0.138,0.269,1.48-0.848,2.407C5.09,5.301,3.969,5.302,5.125,5.996	c0.557,0.335,1.37,0.729,1.199,1.015C6.152,7.297,5.399,8.051,4.988,7.503C4.681,8.256,4.543,8.393,3.96,8.599	C3.378,8.804,2.009,8.256,1.735,7.948c-0.274-0.308-0.187,2.105,0.558,3.204c0.716,1.056,1.386,1.795,1.086,3.302	c-0.119,0.595-0.753,1.746-1.849,1.541c-1.096-0.206,0.377,1.644,1.678,2.123s1.062,2.157,0.411,2.774s1.609,0.205,2.774,0.959	s1.096,1.849,1.541,1.815s1.096-0.651,1.609-0.582c0.514,0.068,1.062,0.549,1.815,0.583s0.542-0.862,1.289-1.091	c0.718-0.22,1.43,0.306,1.759,0.611C14.867,23.614,15.412,24,16.014,24c0.481,0-0.171-1.053,0.753-1.772	c0.925-0.719,1.832-0.489,2.26-1.027c0.154-0.193-0.753-0.89-0.342-1.678s1.37-0.514,1.678-0.993	c0.308-0.479-0.07-0.874,0.958-1.456c1.027-0.582,1.769-0.978,1.85-1.455C23.261,15.093,23.002,13.223,22.863,13.564z M11.626,20.409c-3.402,0-6.159-2.758-6.159-6.159s2.758-6.159,6.159-6.159s6.159,2.758,6.159,6.159S15.028,20.409,11.626,20.409z"
             />
           </svg>
-        </figure>
-        <div class="card-body">
+        </div>
+        <div class="card-body break-all">
           <h2 class="card-title">{account.cardName}</h2>
           <p>{account.accountID}</p>
           <div class="card-actions justify-end">
