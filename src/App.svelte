@@ -4,7 +4,7 @@
 	import SearchBar from "./lib/SearchBar.svelte";
 </script>
 
-<main class="m-5">
+<main class="my-5">
 	<SearchBar />
 	<AccountCards />
 	<NewAccount />
