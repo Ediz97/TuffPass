@@ -16,7 +16,7 @@
 </script>
 
 <div class="flex justify-center mb-5 px-2">
-    <input type="text" placeholder="Type to search" class="input input-ghost border-primary border-2 w-full max-w-lg text-lg"
+    <input type="text" placeholder="Type to search" class="input input-ghost border-primary border-2 w-full max-w-lg"
     bind:value={searchPrompt}
     on:input={filterCards} />
 </div>
