@@ -1,5 +1,10 @@
 <script>
-  import {accounts} from './stores';
+  import { onMount } from 'svelte';
+  import { accounts } from './stores';
+
+  onMount(async () => {
+    accounts.set(await window.electronAPI.getAccounts());
+  });
 
   let newAccountInfo = {
     cardName: "",
@@ -10,6 +15,7 @@
 
   function saveAccount() {
     accounts.update((otherAccounts) => [...otherAccounts, {cardName: newAccountInfo.cardName, accountID: newAccountInfo.accountID, password: newAccountInfo.password, visible: true, iconPath: newAccountInfo.iconPath}]);
+    window.electronAPI.updateAccounts($accounts);
   }
   
   function resetModal() {

@@ -1,5 +1,7 @@
+const { default: _default } = require('concurrently');
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { join } = require('path');
+const { updateAccounts, getAccounts } = require('./file-io.cjs');
 
 app.whenReady().then(main);
 
@@ -25,14 +27,18 @@ function main() {
 ipcMain.handle('selectIcon', () => {
     return dialog.showOpenDialogSync({
         title: 'Select Account Icon',
-        filters: [{ name: 'Icons (png, jpg, jpeg, svg, ico, icns, gif)', extensions: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'icns', 'gif']}],
+        defaultPath: app.getPath('userData'),
+        filters: [{ name: 'Icons', extensions: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'icns', 'gif']}],
         properties: [
             'openFile',
         ]
     });
-    // if (canceled) {
-    //     return;
-    // } else {
-    //     return filePath;
-    // }
+});
+
+ipcMain.handle('getAccounts', () => {
+    return getAccounts();
+});
+
+ipcMain.on('updateAccounts', (event, accounts) => {
+    updateAccounts(accounts);
 });
