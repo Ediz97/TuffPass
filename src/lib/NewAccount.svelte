@@ -34,7 +34,7 @@
   class="tooltip tooltip-left sm:tooltip-top fixed right-[5vw] bottom-[5vh]"
   data-tip="New Account"
 >
-  <label for="new-account" class="btn btn-circle btn-success">
+  <label for="new-account" class="btn btn-circle btn-info shadow-xl">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -56,9 +56,7 @@
 <div class="modal">
   <div class="modal-box">
     <div class="form-control w-full">
-      
-      <!-- svelte-ignore a11y-label-has-associated-control --> <!-- Name field -->
-      <label class="label">
+      <label class="label" for="Card Name">
         <span class="label-text font-bold">Card name:</span>
       </label>
       <input
@@ -68,8 +66,7 @@
         class="input input-bordered w-full"
       />
 
-      <!-- svelte-ignore a11y-label-has-associated-control --> <!-- Account ID field -->
-      <label class="label mt-10">
+      <label class="label mt-10" for="Account ID">
         <span class="label-text">Account ID:</span>
       </label>
       <input
@@ -79,8 +76,7 @@
         class="input input-bordered w-full"
       />
 
-      <!-- svelte-ignore a11y-label-has-associated-control --> <!-- newAccountInfo.password field -->
-      <label class="label">
+      <label class="label" for="Password">
         <span class="label-text">Password:</span>
       </label>
       <input
