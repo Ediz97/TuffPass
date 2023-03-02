@@ -1,25 +1,94 @@
 <script>
   import { accounts } from "./stores";
+
+  const dropdownIcon = "&#8942;";
+  const favoriteIcon = "&#9733;";
+
+  let accountIndex;
+
+  function removeAccount() {
+    $accounts.splice(accountIndex, 1);
+    $accounts = $accounts;
+    window.electronAPI.updateAccounts($accounts);
+  }
 </script>
 
-<!-- <div class="container grid gap-5 auto-cols-min"> -->
-  <div class="container mx-auto gap-5 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 4xl:grid-cols-8 5xl:grid-cols-8 6xl:grid-cols-9 7xl:grid-cols-10" style="column-width: 400px;">
-  {#each $accounts as account}
+<div
+  class="container mx-auto gap-5 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 4xl:grid-cols-8 5xl:grid-cols-8 6xl:grid-cols-9 7xl:grid-cols-10"
+  style="column-width: 400px;"
+>
+  {#each $accounts as account, index}
     {#if account.visible}
-      <div class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden">
-        <div class="h-full flex justify-center items-center" style="min-width: 100px; max-width: 100px;">
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              d="M22.863,13.564c-0.053,0.131-0.27,1.67-1.504,1.746c-0.654,0.04-1.321-0.481-1.235-1.416	c0.153-1.673,0.632-1.135,0.277-2.92c-0.229-1.152-0.528-1.449-0.246-2.323C20.353,8.039,21.521,7.925,22,6.212l0,0	c-1.686,0.37-3.219,0.842-4.214,0.223c-0.824-0.513-1.29-1.282-0.818-2.092c0.227-0.391,1.238-0.787,1.898-1.224	c1.57-1.04,0.894-3.65,0.521-2.928c-0.704,1.365-2.242,1.284-4.125,1.318c-1.027,0.135-0.89,1.609-1.918,1.781	c-1.027,0.171-1.678-0.514-2.26-0.205c-0.582,0.308-0.685,2.602-1.644,2.602c-0.959,0-1.727-0.232-1.609-1.233	C7.922,3.67,7.541,3.119,6.315,2.581c-0.314-0.138,0.269,1.48-0.848,2.407C5.09,5.301,3.969,5.302,5.125,5.996	c0.557,0.335,1.37,0.729,1.199,1.015C6.152,7.297,5.399,8.051,4.988,7.503C4.681,8.256,4.543,8.393,3.96,8.599	C3.378,8.804,2.009,8.256,1.735,7.948c-0.274-0.308-0.187,2.105,0.558,3.204c0.716,1.056,1.386,1.795,1.086,3.302	c-0.119,0.595-0.753,1.746-1.849,1.541c-1.096-0.206,0.377,1.644,1.678,2.123s1.062,2.157,0.411,2.774s1.609,0.205,2.774,0.959	s1.096,1.849,1.541,1.815s1.096-0.651,1.609-0.582c0.514,0.068,1.062,0.549,1.815,0.583s0.542-0.862,1.289-1.091	c0.718-0.22,1.43,0.306,1.759,0.611C14.867,23.614,15.412,24,16.014,24c0.481,0-0.171-1.053,0.753-1.772	c0.925-0.719,1.832-0.489,2.26-1.027c0.154-0.193-0.753-0.89-0.342-1.678s1.37-0.514,1.678-0.993	c0.308-0.479-0.07-0.874,0.958-1.456c1.027-0.582,1.769-0.978,1.85-1.455C23.261,15.093,23.002,13.223,22.863,13.564z M11.626,20.409c-3.402,0-6.159-2.758-6.159-6.159s2.758-6.159,6.159-6.159s6.159,2.758,6.159,6.159S15.028,20.409,11.626,20.409z"
-            />
-          </svg> -->
-          <img src="{account.iconPath}" alt="{account.cardName}"/>
+      <div
+        class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden"
+      >
+        <div
+          class="h-full flex justify-center items-center"
+          style="min-width: 100px; max-width: 100px;"
+        >
+          <img src={account.iconPath} alt={account.iconPath} />
         </div>
-        <div class="card-body break-all">
+        <div class="card-body break-words">
+          <button
+            class="btn btn-circle btn-sm btn-ghost absolute right-8 text-lg"
+            style="top: 4px;">{@html favoriteIcon}</button
+          >
+          <div class="dropdown dropdown-end absolute right-1 top-1">
+            <label
+              tabindex="0"
+              class="btn btn-circle btn-sm btn-ghost text-xl outline-none"
+              >{@html dropdownIcon}</label
+            >
+            <ul
+              tabindex="0"
+              class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 outline-none"
+            >
+              <li>
+                <label for="editAccount"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                    />
+                  </svg>
+                  Edit</label
+                >
+              </li>
+              <li>
+                <label class="text-error" on:click={() => accountIndex = index} for="removeConfirm">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                    />
+                  </svg>
+                  Remove</label
+                >
+              </li>
+            </ul>
+          </div>
           <h2 class="card-title">{account.cardName}</h2>
           <p>{account.accountID}</p>
           <div class="card-actions justify-end">
-            <button class="btn btn-circle btn-primary" on:click={() => navigator.clipboard.writeText(account.password)}
+            <button
+              class="btn btn-circle btn-primary"
+              on:click={() => navigator.clipboard.writeText(account.password)}
               >{@html "&#128203;"}</button
             >
           </div>
@@ -27,4 +96,16 @@
       </div>
     {/if}
   {/each}
+</div>
+
+<input type="checkbox" id="removeConfirm" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Confirmation</h3>
+    <p class="py-4">Are you sure you want to remove this account?</p>
+    <div class="modal-action">
+      <label for="removeConfirm" class="btn btn-outline">Cancel</label>
+      <label for="removeConfirm" class="btn btn-error" on:click={removeAccount}>Remove</label>
+    </div>
+  </div>
 </div>
