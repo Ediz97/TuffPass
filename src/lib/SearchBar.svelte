@@ -1,15 +1,15 @@
 <script>
-    import { accounts } from "./stores";
+    import { userAccounts } from "./stores";
 
     let searchPrompt = '';
 
     function filterCards() {
-        for (let i = 0; i < $accounts.length; i++) {
-            if (!$accounts[i].cardName.toLowerCase().includes(searchPrompt.toLowerCase())) {
-                $accounts[i].visible = false;
+        for (let i = 0; i < $userAccounts.length; i++) {
+            if (!$userAccounts[i].cardName.toLowerCase().includes(searchPrompt.toLowerCase())) {
+                $userAccounts[i].visible = false;
             }
             else {
-                $accounts[i].visible = true;
+                $userAccounts[i].visible = true;
             }
         }
     }
