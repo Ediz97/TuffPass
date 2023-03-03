@@ -1,15 +1,21 @@
 <script>
-  import { accounts } from "./stores";
+  import { userAccounts, createNewAccount } from "./stores";
+  import NewAccount from "./NewAccount.svelte";
 
   const dropdownIcon = "&#8942;";
   const favoriteIcon = "&#9733;";
 
   let accountIndex;
+  let accountInfo;
 
-  function removeAccount() {
-    $accounts.splice(accountIndex, 1);
-    $accounts = $accounts;
-    window.electronAPI.updateAccounts($accounts);
+  function adoptAccountDetails() {
+    createNewAccount.set(false);
+    accountInfo = {
+      cardName: $userAccounts.at(accountIndex).cardName,
+      accountID: $userAccounts.at(accountIndex).accountID,
+      password: $userAccounts.at(accountIndex).password,
+      iconPath: $userAccounts.at(accountIndex).iconPath,
+    };
   }
 </script>
 
@@ -17,7 +23,7 @@
   class="container mx-auto gap-5 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 4xl:grid-cols-8 5xl:grid-cols-8 6xl:grid-cols-9 7xl:grid-cols-10"
   style="column-width: 400px;"
 >
-  {#each $accounts as account, index}
+  {#each $userAccounts as account, index}
     {#if account.visible}
       <div
         class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden"
@@ -44,7 +50,12 @@
               class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 outline-none"
             >
               <li>
-                <label for="editAccount"
+                <label
+                  for="create-account"
+                  on:click={() => {
+                    accountIndex = index;
+                    adoptAccountDetails();
+                  }}
                   ><svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -63,7 +74,11 @@
                 >
               </li>
               <li>
-                <label class="text-error" on:click={() => accountIndex = index} for="removeConfirm">
+                <label
+                  class="text-error"
+                  on:click={() => (accountIndex = index)}
+                  for="remove-confirm"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -98,14 +113,4 @@
   {/each}
 </div>
 
-<input type="checkbox" id="removeConfirm" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">Confirmation</h3>
-    <p class="py-4">Are you sure you want to remove this account?</p>
-    <div class="modal-action">
-      <label for="removeConfirm" class="btn btn-outline">Cancel</label>
-      <label for="removeConfirm" class="btn btn-error" on:click={removeAccount}>Remove</label>
-    </div>
-  </div>
-</div>
+<NewAccount {accountIndex} {accountInfo} />
