@@ -1,6 +1,6 @@
 <script>
   import { userAccounts, createNewAccount } from "./stores";
-  import NewAccount from "./NewAccount.svelte";
+  import AccountsLifecycle from "./AccountsLifecycle.svelte";
 
   const dropdownIcon = "&#8942;";
   const favoriteIcon = "&#9733;";
@@ -113,4 +113,4 @@
   {/each}
 </div>
 
-<NewAccount {accountIndex} {accountInfo} />
+<AccountsLifecycle {accountIndex} {accountInfo} />
