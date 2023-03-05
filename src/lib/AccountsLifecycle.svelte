@@ -16,7 +16,6 @@
   };
 
   function saveAccount() {
-    console.log($createNewAccount);
     if ($createNewAccount) {
       userAccounts.update((otherUserAccounts) => [
         ...otherUserAccounts,
@@ -29,7 +28,6 @@
         },
       ]);
     } else {
-      console.log("splice");
       $userAccounts.splice(accountIndex, 1, {
         cardName: accountInfo.cardName,
         accountID: accountInfo.accountID,
@@ -54,7 +52,7 @@
       cardName: "",
       accountID: "",
       password: "",
-      iconPath: "",
+      iconPath: "Icon",
     };
   }
 </script>
@@ -91,35 +89,56 @@
 <div class="modal">
   <div class="modal-box">
     <div class="form-control w-full">
-      <label class="label" for="card-name">
-        <span class="label-text font-bold">Card name:</span>
-      </label>
-      <input
-        type="text"
-        placeholder="Enter name"
-        bind:value={accountInfo.cardName}
-        class="input input-bordered w-full"
-      />
 
-      <label class="label mt-10" for="account-ID">
-        <span class="label-text">Account ID:</span>
+      <label class="label" for="card-name">
+        <span class="label-text">Title</span>
+      </label>
+      <label class="input-group flex">
+        <input
+          type="text"
+          placeholder="Enter card name"
+          bind:value={accountInfo.cardName}
+          class="input input-bordered w-full"
+        />
+        <button
+          class="btn btn-info items-center justify-center w-24"
+          on:click={async () =>
+            (accountInfo.iconPath = await window.electronAPI.selectIcon())}
+          ><img
+            src={accountInfo.iconPath}
+            alt={accountInfo.iconPath}
+            style="max-height: 44px;"
+          /></button
+        >
+      </label>
+
+      <label class="label mt-5" for="account-ID">
+        <span class="label-text">Account ID</span>
       </label>
       <input
         type="text"
         placeholder="Enter account ID"
         bind:value={accountInfo.accountID}
-        class="input input-bordered w-full"
+        class="input input-bordered"
       />
 
-      <label class="label" for="password">
-        <span class="label-text">Password:</span>
+      <label class="label mt-5" for="password">
+        <span class="label-text">Password</span>
       </label>
-      <input
-        type="text"
-        placeholder="Enter password"
-        bind:value={accountInfo.password}
-        class="input input-bordered w-full"
-      />
+      <label class="input-group">
+        <input
+          type="text"
+          placeholder="Enter password"
+          bind:value={accountInfo.password}
+          class="input input-bordered w-full"
+        />
+        <button
+          class="btn btn-info w-24"
+          on:click={() => (accountInfo.password = "generated password")}
+          >Generate</button
+        >
+      </label>
+
       <!-- accountInfo.password Strength Meters -->
       {#if accountInfo.password.length === 0}
         <progress class="progress w-full mt-3" value="0" max="100" />
@@ -153,13 +172,7 @@
         />
         <p class="text-xs text-success ml-0.5">Very Strong</p>
       {/if}
-
-      <button
-        class="btn btn-primary w-min mt-3"
-        on:click={() => (accountInfo.password = "generated password")}
-      >
-        Generate Password
-      </button>
+      
     </div>
     <div class="modal-action">
       <label for="create-account" class="btn btn-error">Cancel</label>
@@ -168,12 +181,6 @@
         >Confirm
       </label>
     </div>
-    <button
-      class="btn btn-primary"
-      on:click={async () =>
-        (accountInfo.iconPath = await window.electronAPI.selectIcon())}
-      >Icon</button
-    >
   </div>
 </div>
 
