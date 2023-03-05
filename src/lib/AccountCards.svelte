@@ -26,13 +26,13 @@
   {#each $userAccounts as account, index}
     {#if account.visible}
       <div
-        class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden"
+        class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden select-none" style="min-height: 180px;"
       >
         <div
           class="h-full flex justify-center items-center"
           style="min-width: 100px; max-width: 100px;"
         >
-          <img src={account.iconPath} alt={account.iconPath} />
+          <img src={account.iconPath} alt={account.iconPath} draggable="false"/>
         </div>
         <div class="card-body break-words">
           <button
@@ -102,9 +102,18 @@
           <p>{account.accountID}</p>
           <div class="card-actions justify-end">
             <button
-              class="btn btn-circle btn-primary"
-              on:click={() => navigator.clipboard.writeText(account.password)}
-              >{@html "&#128203;"}</button
+              class="btn btn-circle btn-ghost absolute bottom-3 right-14"
+              on:click={() => navigator.clipboard.writeText(account.accountID)}
+              ><img src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/null/external-User-ID-emails-those-icons-lineal-those-icons-2.png" alt="ID"/></button
+            >
+            <button
+              class="btn btn-circle btn-ghost absolute bottom-3 right-3"
+              on:click={() => {
+                navigator.clipboard.writeText(account.password);
+                passwordCopied = true;
+                setTimeout(() => passwordCopied = false, 2000)
+              }}
+              ><img src="https://img.icons8.com/material-two-tone/24/null/key--v2.png" alt="Key"/></button
             >
           </div>
         </div>
