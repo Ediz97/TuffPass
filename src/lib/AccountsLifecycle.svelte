@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { userAccounts, createNewAccount } from "./stores";
+  import { passwordCheck, generatePassword } from "./PasswordCheck.svelte"
 
   onMount(async () => {
     userAccounts.set(await window.electronAPI.getAccounts());
@@ -134,44 +135,14 @@
         />
         <button
           class="btn btn-info w-24"
-          on:click={() => (accountInfo.password = "generated password")}
+          on:click={() => (accountInfo.password = generatePassword())}
           >Generate</button
         >
       </label>
 
-      <!-- accountInfo.password Strength Meters -->
-      {#if accountInfo.password.length === 0}
-        <progress class="progress w-full mt-3" value="0" max="100" />
-        <p class="text-xs ml-0.5"><br /></p>
-      {:else if accountInfo.password.length <= 3}
-        <progress
-          class="progress progress-error w-full mt-3"
-          value="25"
-          max="100"
-        />
-        <p class="text-xs text-error ml-0.5">Weak</p>
-      {:else if accountInfo.password.length > 3 && accountInfo.password.length <= 6}
-        <progress
-          class="progress progress-warning w-full mt-3"
-          value="50"
-          max="100"
-        />
-        <p class="text-xs text-warning ml-0.5">Medium</p>
-      {:else if accountInfo.password.length > 6 && accountInfo.password.length <= 9}
-        <progress
-          class="progress progress-info w-full mt-3"
-          value="75"
-          max="100"
-        />
-        <p class="text-xs text-info ml-0.5">Strong</p>
-      {:else}
-        <progress
-          class="progress progress-success w-full mt-3"
-          value="100"
-          max="100"
-        />
-        <p class="text-xs text-success ml-0.5">Very Strong</p>
-      {/if}
+      <!-- Password Strength Meter -->
+      <progress class="progress w-full mt-3 px-1" value={passwordCheck(accountInfo.password)[0]} max="100" />
+        <p class="text-xs ml-0.5 px-1">{@html passwordCheck(accountInfo.password)[1]}</p>
       
     </div>
     <div class="modal-action">
