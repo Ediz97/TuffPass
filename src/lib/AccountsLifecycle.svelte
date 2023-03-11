@@ -5,7 +5,7 @@
 
   onMount(async () => {
     userAccounts.set(await window.electronAPI.getAccounts());
-  });
+    });
 
   export let accountIndex;
 
@@ -14,6 +14,7 @@
     accountID: "",
     password: "",
     iconPath: "",
+    favorite: false
   };
 
   function saveAccount() {
@@ -25,6 +26,7 @@
           accountID: accountInfo.accountID,
           password: accountInfo.password,
           iconPath: accountInfo.iconPath,
+          favorite: accountInfo.favorite,
           visible: true,
         },
       ]);
@@ -34,6 +36,7 @@
         accountID: accountInfo.accountID,
         password: accountInfo.password,
         iconPath: accountInfo.iconPath,
+        favorite: accountInfo.favorite,
         visible: true,
       });
     }
@@ -54,6 +57,7 @@
       accountID: "",
       password: "",
       iconPath: "Icon",
+      favorite: false
     };
   }
 </script>

@@ -3,7 +3,6 @@
   import AccountsLifecycle from "./AccountsLifecycle.svelte";
 
   const dropdownIcon = "&#8942;";
-  const favoriteIcon = "&#9733;";
 
   let accountIndex;
   let accountInfo;
@@ -15,7 +14,29 @@
       accountID: $userAccounts.at(accountIndex).accountID,
       password: $userAccounts.at(accountIndex).password,
       iconPath: $userAccounts.at(accountIndex).iconPath,
+      favorite: $userAccounts.at(accountIndex).favorite,
     };
+  }
+
+  function toggleFavorite(index) {
+    const accountToBeMoved = $userAccounts[index];
+    $userAccounts[index].favorite = !$userAccounts[index].favorite;
+
+    if ($userAccounts[index].favorite) {
+      userAccounts.update(otherUserAccounts => [
+        accountToBeMoved, ...otherUserAccounts
+      ]);
+      $userAccounts.splice(index + 1, 1);
+    } else {
+      for (let i = $userAccounts.length - 1; i >= 0; i--) {
+        if ($userAccounts[i].favorite) {
+          $userAccounts.splice(i + 1, 0, accountToBeMoved);
+          $userAccounts.splice(index, 1);
+          break;
+        }
+      }
+    }
+    window.electronAPI.updateAccounts($userAccounts);
   }
 </script>
 
@@ -26,19 +47,36 @@
   {#each $userAccounts as account, index}
     {#if account.visible}
       <div
-        class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden select-none" style="min-height: 180px;"
+        class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden select-none"
+        style="min-height: 180px;"
       >
         <div
           class="h-full flex justify-center items-center"
           style="min-width: 100px; max-width: 100px;"
         >
-          <img src={account.iconPath} alt={account.iconPath} draggable="false"/>
+          <img
+            src={account.iconPath}
+            alt={account.iconPath}
+            draggable="false"
+          />
         </div>
         <div class="card-body break-words">
-          <button
-            class="btn btn-circle btn-sm btn-ghost absolute right-8 text-lg"
-            style="top: 4px;">{@html favoriteIcon}</button
+          <div
+            class="rating rating-sm absolute right-10 top-3"
+            on:click={() => toggleFavorite(index)}
           >
+          {#if account.favorite}
+            <input
+              type="radio"
+              class="mask mask-star-2 bg-orange-400"
+            />
+            {:else}
+            <input
+              type="radio"
+              class="mask mask-star-2 opacity-50"
+            />
+            {/if}
+        </div>
           <div class="dropdown dropdown-end absolute right-1 top-1">
             <label
               tabindex="0"
@@ -104,16 +142,20 @@
             <button
               class="btn btn-circle btn-ghost absolute bottom-3 right-14"
               on:click={() => navigator.clipboard.writeText(account.accountID)}
-              ><img src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/null/external-User-ID-emails-those-icons-lineal-those-icons-2.png" alt="ID"/></button
+              ><img
+                src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/null/external-User-ID-emails-those-icons-lineal-those-icons-2.png"
+                alt="ID"
+              /></button
             >
             <button
               class="btn btn-circle btn-ghost absolute bottom-3 right-3"
               on:click={() => {
                 navigator.clipboard.writeText(account.password);
-                passwordCopied = true;
-                setTimeout(() => passwordCopied = false, 2000)
               }}
-              ><img src="https://img.icons8.com/material-two-tone/24/null/key--v2.png" alt="Key"/></button
+              ><img
+                src="https://img.icons8.com/material-two-tone/24/null/key--v2.png"
+                alt="Key"
+              /></button
             >
           </div>
         </div>
