@@ -23,8 +23,9 @@
     $userAccounts[index].favorite = !$userAccounts[index].favorite;
 
     if ($userAccounts[index].favorite) {
-      userAccounts.update(otherUserAccounts => [
-        accountToBeMoved, ...otherUserAccounts
+      userAccounts.update((otherUserAccounts) => [
+        accountToBeMoved,
+        ...otherUserAccounts,
       ]);
       $userAccounts.splice(index + 1, 1);
     } else {
@@ -62,27 +63,31 @@
         </div>
         <div class="card-body break-words">
           <div
-            class="rating rating-sm absolute right-10 top-3"
+            class="rating rating-sm absolute right-11 top-3"
             on:click={() => toggleFavorite(index)}
           >
-          {#if account.favorite}
-            <input
-              type="radio"
-              class="mask mask-star-2 bg-orange-400"
-            />
+            {#if account.favorite}
+              <input type="radio" class="mask mask-star-2 bg-orange-400" />
             {:else}
-            <input
-              type="radio"
-              class="mask mask-star-2 opacity-50"
-            />
+              <input type="radio" class="mask mask-star-2 opacity-50" />
             {/if}
-        </div>
-          <div class="dropdown dropdown-end absolute right-1 top-1">
+          </div>
+          <div class="dropdown dropdown-end absolute right-1 top-1.5">
             <label
               tabindex="0"
               class="btn btn-circle btn-sm btn-ghost text-xl outline-none"
-              >{@html dropdownIcon}</label
             >
+              <svg
+                class="swap-off fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 512 512"
+                ><path
+                  d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+                /></svg
+              >
+            </label>
             <ul
               tabindex="0"
               class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 outline-none"
