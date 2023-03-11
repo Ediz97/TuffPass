@@ -18,7 +18,7 @@
     }
 </script>
 
-<div class="mx-5 mb-5 text-neutral-content">
+<div class="mx-4 mb-5 text-neutral-content">
     <div
         class="navbar bg-primary shadow-xl rounded-xl px-5"
     >

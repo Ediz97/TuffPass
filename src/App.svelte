@@ -1,9 +1,9 @@
 <script>
 	import AccountCards from "./lib/AccountCards.svelte";
-	import SearchBar from "./lib/SearchBar.svelte";
+	import NavigationBar from "./lib/NavigationBar.svelte";
 </script>
 
 <main class="my-5">
-	<SearchBar />
+	<NavigationBar />
 	<AccountCards />
 </main>
