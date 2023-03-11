@@ -1,5 +1,6 @@
 <script>
     import { userAccounts } from "./stores";
+    import ThemePicker from "./ThemePicker.svelte";
 
     let searchPrompt = "";
 
@@ -18,11 +19,11 @@
     }
 </script>
 
-<div class="mx-4 mb-5 text-neutral-content">
+<div class="mx-3 mb-5">
     <div
-        class="navbar bg-primary shadow-xl rounded-xl px-5"
+        class="navbar bg-primary shadow-xl px-5"
     >
-        <h1 class="normal-case text-xl select-none pr-5 font-bold">TuffPass</h1>
+        <h1 class="normal-case text-xl select-none pr-5 font-black text-primary-content tracking-wide">TuffPass</h1>
         <div class="ml-auto max-w-sm w-full">
             <div class="input-group pr-5">
                 <input
@@ -54,9 +55,7 @@
                     >
                 </button>
             </div>
-            <button class="btn btn-ghost btn-circle btn-sm">
-                <img src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/null/external-color-palette-graphic-design-justicon-lineal-color-justicon.png" alt="Themes"/>
-            </button>
+            <ThemePicker />
         </div>
     </div>
 </div>
