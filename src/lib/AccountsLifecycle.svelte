@@ -64,13 +64,13 @@
 
 <!-- The New Account Button -->
 <div
-  class="tooltip tooltip-left sm:tooltip-top fixed right-[5vw] bottom-[5vh]"
+  class="tooltip tooltip-left tooltip-primary sm:tooltip-top fixed right-[5vw] bottom-[5vh]"
   data-tip="New Account"
 >
   <label
     for="create-account"
     on:click={resetModal}
-    class="btn btn-circle btn-info shadow-xl"
+    class="btn btn-circle btn-primary shadow-xl"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +106,7 @@
           class="input input-bordered w-full"
         />
         <button
-          class="btn btn-info items-center justify-center w-24"
+          class="btn btn-primary items-center justify-center w-24"
           on:click={async () =>
             (accountInfo.iconPath = await window.electronAPI.selectIcon())}
           ><img
@@ -138,7 +138,7 @@
           class="input input-bordered w-full"
         />
         <button
-          class="btn btn-info w-24"
+          class="btn btn-primary w-24"
           on:click={() => (accountInfo.password = generatePassword())}
           >Generate</button
         >
