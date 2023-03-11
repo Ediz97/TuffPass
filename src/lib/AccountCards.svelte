@@ -48,8 +48,8 @@
   {#each $userAccounts as account, index}
     {#if account.visible}
       <div
-        class="card card-side pl-5 bg-base-300 shadow-xl border-solid border-primary border-2 border-spacing-3 overflow-hidden select-none"
-        style="min-height: 180px;"
+        class="card card-side pl-5 shadow-xl border-primary border-2 overflow-hidden select-none"
+        style="min-height: 180px; border-style: groove;"
       >
         <div
           class="h-full flex justify-center items-center"
@@ -141,7 +141,7 @@
               </li>
             </ul>
           </div>
-          <h2 class="card-title">{account.cardName}</h2>
+          <h2 class="card-title font-extrabold">{account.cardName}</h2>
           <p>{account.accountID}</p>
           <div class="card-actions justify-end">
             <button
