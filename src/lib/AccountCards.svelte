@@ -51,12 +51,27 @@
 </script>
 
 {#if userFeedback}
-<div in:fly="{{y: 20, duration: 500}}" out:fade class="alert alert-success shadow-lg absolute w-auto z-10 select-none right-3">
-	<div>
-	  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-	  <span>{buttonFeedback} copied!</span>
-	</div>
-</div>
+  <div
+    in:fly={{ y: 20, duration: 500 }}
+    out:fade
+    class="alert alert-success shadow-lg absolute w-auto z-10 select-none right-3"
+  >
+    <div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="stroke-current flex-shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        ><path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        /></svg
+      >
+      <span>{buttonFeedback} copied!</span>
+    </div>
+  </div>
 {/if}
 <div
   class="container mx-auto mb-5 gap-5 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 4xl:grid-cols-8 5xl:grid-cols-8 6xl:grid-cols-9 7xl:grid-cols-10"
@@ -163,17 +178,27 @@
           <div class="card-actions justify-end">
             <button
               class="btn btn-circle btn-ghost absolute bottom-3 right-16"
-              on:click={() => {navigator.clipboard.writeText(account.accountID);
-                              giveUserFeedback("Account ID");}}
-              ><img style="max-width: 40px;" src="https://img.icons8.com/external-those-icons-lineal-those-icons/100/000000/external-User-ID-emails-those-icons-lineal-those-icons-2.png" alt="ID"/></button
+              on:click={() => {
+                navigator.clipboard.writeText(account.accountID);
+                giveUserFeedback("Account ID");
+              }}
+              ><img
+                style="max-width: 40px;"
+                src="https://img.icons8.com/external-those-icons-lineal-those-icons/100/000000/external-User-ID-emails-those-icons-lineal-those-icons-2.png"
+                alt="ID"
+              /></button
             >
             <button
-                class="btn btn-circle btn-ghost absolute bottom-3 right-3"
-                on:click={() => {
-                  navigator.clipboard.writeText(account.password);
-                  giveUserFeedback("Password");
-                }}
-                ><img style="max-width: 40px;" src="https://img.icons8.com/external-others-zufarizal-robiyanto/100/null/external-lock-mutuline-ui-essential-others-zufarizal-robiyanto.png" alt="Password"/></button
+              class="btn btn-circle btn-ghost absolute bottom-3 right-3"
+              on:click={() => {
+                navigator.clipboard.writeText(account.password);
+                giveUserFeedback("Password");
+              }}
+              ><img
+                style="max-width: 40px;"
+                src="https://img.icons8.com/external-others-zufarizal-robiyanto/100/null/external-lock-mutuline-ui-essential-others-zufarizal-robiyanto.png"
+                alt="Password"
+              /></button
             >
           </div>
         </div>
