@@ -15,6 +15,7 @@ function main() {
         autoHideMenuBar: false,
         webPreferences: {
             preload: join(__dirname, "preload.js"),
+            spellcheck: false
         },
     });
 
