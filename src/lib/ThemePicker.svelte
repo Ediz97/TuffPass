@@ -43,13 +43,6 @@
   }
 </script>
 
-<!-- <button class="btn btn-ghost btn-circle btn-sm">
-  <img
-    src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/null/external-color-palette-graphic-design-justicon-lineal-color-justicon.png"
-    alt="Themes"
-  />
-</button> -->
-
 <div class="dropdown dropdown-bottom dropdown-end flex">
   <button class="btn btn-circle btn-sm btn-ghost outline-none items-center">
     <img
