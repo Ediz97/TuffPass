@@ -1,11 +1,13 @@
 <script>
   import { userAccounts, createNewAccount } from "./stores";
   import AccountsLifecycle from "./AccountsLifecycle.svelte";
-
-  const dropdownIcon = "&#8942;";
+  import { fade, fly } from 'svelte/transition';
 
   let accountIndex;
   let accountInfo;
+  let animationID;
+  let buttonFeedback = '';
+  let userFeedback = false;
 
   function adoptAccountDetails() {
     createNewAccount.set(false);
@@ -39,10 +41,25 @@
     }
     window.electronAPI.updateAccounts($userAccounts);
   }
+
+  function giveUserFeedback(string) {
+    clearTimeout(animationID);
+    buttonFeedback = string;
+    userFeedback = true;
+    animationID = setTimeout(() => userFeedback = false, 1200);
+  }
 </script>
 
+{#if userFeedback}
+<div in:fly="{{y: 20, duration: 500}}" out:fade class="alert alert-success shadow-lg absolute w-auto z-10 select-none right-3">
+	<div>
+	  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+	  <span>{buttonFeedback} copied!</span>
+	</div>
+</div>
+{/if}
 <div
-  class="container mx-auto gap-5 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 4xl:grid-cols-8 5xl:grid-cols-8 6xl:grid-cols-9 7xl:grid-cols-10"
+  class="container mx-auto mb-5 gap-5 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 4xl:grid-cols-8 5xl:grid-cols-8 6xl:grid-cols-9 7xl:grid-cols-10"
   style="column-width: 400px;"
 >
   {#each $userAccounts as account, index}
@@ -90,7 +107,7 @@
             </label>
             <ul
               tabindex="0"
-              class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 outline-none"
+              class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 outline-none border"
             >
               <li>
                 <label
@@ -142,25 +159,21 @@
             </ul>
           </div>
           <h2 class="card-title font-extrabold">{account.cardName}</h2>
-          <p>{account.accountID}</p>
+          <p class="break-all">{account.accountID}</p>
           <div class="card-actions justify-end">
             <button
-              class="btn btn-circle btn-ghost absolute bottom-3 right-14"
-              on:click={() => navigator.clipboard.writeText(account.accountID)}
-              ><img
-                src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/null/external-User-ID-emails-those-icons-lineal-those-icons-2.png"
-                alt="ID"
-              /></button
+              class="btn btn-circle btn-ghost absolute bottom-3 right-16"
+              on:click={() => {navigator.clipboard.writeText(account.accountID);
+                              giveUserFeedback("Account ID");}}
+              ><img style="max-width: 40px;" src="https://img.icons8.com/external-those-icons-lineal-those-icons/100/000000/external-User-ID-emails-those-icons-lineal-those-icons-2.png" alt="ID"/></button
             >
             <button
-              class="btn btn-circle btn-ghost absolute bottom-3 right-3"
-              on:click={() => {
-                navigator.clipboard.writeText(account.password);
-              }}
-              ><img
-                src="https://img.icons8.com/material-two-tone/24/null/key--v2.png"
-                alt="Key"
-              /></button
+                class="btn btn-circle btn-ghost absolute bottom-3 right-3"
+                on:click={() => {
+                  navigator.clipboard.writeText(account.password);
+                  giveUserFeedback("Password");
+                }}
+                ><img style="max-width: 40px;" src="https://img.icons8.com/external-others-zufarizal-robiyanto/100/null/external-lock-mutuline-ui-essential-others-zufarizal-robiyanto.png" alt="Password"/></button
             >
           </div>
         </div>
