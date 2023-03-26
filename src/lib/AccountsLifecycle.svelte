@@ -1,11 +1,13 @@
 <script>
-  import { onMount } from "svelte";
   import { userAccounts, createNewAccount } from "./stores";
   import { passwordCheck, generatePassword } from "./PasswordCheck.svelte"
+  import { tweened } from "svelte/motion";
+	import { cubicOut } from "svelte/easing";
 
-  onMount(async () => {
-    userAccounts.set(await window.electronAPI.getAccounts());
-    });
+  const passwordStrength = tweened(0, {
+    duration: 400,
+    easing: cubicOut
+  });
 
   export let accountIndex;
 
@@ -64,7 +66,7 @@
 
 <!-- The New Account Button -->
 <div
-  class="tooltip tooltip-left tooltip-primary sm:tooltip-top fixed right-[5vw] bottom-[5vh]"
+  class="tooltip tooltip-left tooltip-primary sm:tooltip-top fixed right-[5vh] bottom-[5vh]"
   data-tip="New Account"
 >
   <label
@@ -135,18 +137,22 @@
           type="text"
           placeholder="Enter password"
           bind:value={accountInfo.password}
+          on:input={() => passwordStrength.set(passwordCheck(accountInfo.password)[0])}
           class="input input-bordered w-full"
         />
         <button
           class="btn btn-primary w-24"
-          on:click={() => (accountInfo.password = generatePassword())}
+          on:click={() => {
+            accountInfo.password = generatePassword();
+            passwordStrength.set(passwordCheck(accountInfo.password)[0]);
+          }}
           >Generate</button
         >
       </label>
 
       <!-- Password Strength Meter -->
-      <progress class="progress w-full mt-3 px-1" value={passwordCheck(accountInfo.password)[0]} max="100" />
-        <p class="text-xs ml-0.5 px-1">{@html passwordCheck(accountInfo.password)[1]}</p>
+      <progress class="progress progress-primary w-full mt-3 px-1" value={$passwordStrength} />
+        <p class="text-xs ml-0.5 px-1 pt-1">{@html passwordCheck(accountInfo.password)[1]}</p>
       
     </div>
     <div class="modal-action">

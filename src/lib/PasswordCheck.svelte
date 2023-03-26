@@ -10,38 +10,38 @@
     }
 
     if (password.length <= 7) {
-      return [25, 'Weak'];
+      return [0.25, 'Weak'];
     }
 
     if (password.length <= 10) {
       if (amountOfCharacterTypes(password) <= 2) {
-        return [25, 'Weak'];
+        return [0.25, 'Weak'];
       } else if (amountOfCharacterTypes(password) === 3) {
-        return [50, 'Medium'];
+        return [0.5, 'Medium'];
       } else {
-        return [75, 'Strong'];
+        return [0.75, 'Strong'];
       }
     }
 
     if (password.length <= 13) {
       if (amountOfCharacterTypes(password) === 1) {
-        return [25, 'Weak'];
+        return [0.25, 'Weak'];
       } else if (amountOfCharacterTypes(password) === 2) {
-        return [50, 'Medium'];
+        return [0.5, 'Medium'];
       } else if (amountOfCharacterTypes(password) === 3) {
-        return [75, 'Strong'];
+        return [0.75, 'Strong'];
       } else {
-        return [100, 'Very Strong'];
+        return [1, 'Very Strong'];
       }
     }
 
     if (password.length >= 14) {
       if (amountOfCharacterTypes(password) === 1) {
-        return [25, 'Weak'];
+        return [0.25, 'Weak'];
       } else if (amountOfCharacterTypes(password) === 2) {
-        return [50, 'Medium'];
+        return [0.5, 'Medium'];
       } else {
-        return [100, 'Very Strong'];
+        return [1, 'Very Strong'];
       }
     }
   }
