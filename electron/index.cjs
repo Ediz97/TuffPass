@@ -1,4 +1,3 @@
-const { default: _default } = require('concurrently');
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { join } = require('path');
 const { updateAccounts, getAccounts } = require('./file-io.cjs');
@@ -12,7 +11,7 @@ function main() {
         minWidth: 450,
         minHeight: 500,
         show: false,
-        autoHideMenuBar: false,
+        autoHideMenuBar: true,
         webPreferences: {
             preload: join(__dirname, "preload.js"),
             spellcheck: false
@@ -28,7 +27,7 @@ function main() {
 ipcMain.handle('selectIcon', () => {
     return dialog.showOpenDialogSync({
         title: 'Select Account Icon',
-        defaultPath: app.getPath('userData'),
+        defaultPath: join(app.getPath("appData"), "../Local/Programs/TuffPass/icons"),
         filters: [{ name: 'Icons', extensions: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'icns', 'gif']}],
         properties: [
             'openFile',
