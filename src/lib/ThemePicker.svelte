@@ -1,10 +1,4 @@
 <script>
-  import { onMount } from "svelte";
-
-  onMount(() => {
-    document.documentElement.dataset.theme = localStorage.getItem("theme");
-  });
-
   const themes = [
     "light",
     "dark",

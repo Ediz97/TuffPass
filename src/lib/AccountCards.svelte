@@ -2,12 +2,17 @@
   import { userAccounts, createNewAccount } from "./stores";
   import AccountsLifecycle from "./AccountsLifecycle.svelte";
   import { fade, fly } from 'svelte/transition';
+  import { onMount } from "svelte";
 
   let accountIndex;
   let accountInfo;
   let animationID;
   let buttonFeedback = '';
   let userFeedback = false;
+
+  onMount(async() => {
+    userAccounts.set(await window.electronAPI.getAccounts());
+  });
 
   function adoptAccountDetails() {
     createNewAccount.set(false);

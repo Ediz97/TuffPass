@@ -19,7 +19,7 @@
   }
 </script>
 
-<div class="mx-3 my-5">
+<div class="mx-3 py-5">
   <div class="navbar bg-primary shadow-xl px-5">
     <h1
       class="normal-case text-xl select-none pr-5 font-black text-primary-content tracking-wide"
