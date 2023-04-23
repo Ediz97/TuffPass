@@ -24,15 +24,17 @@ function main() {
     win.on("ready-to-show", win.show);
 }
 
+// The showOpenDialogSync method returns an array, containing a string of the absolute path of the image. Join method removes the array, and by using split, we get the relative path.
 ipcMain.handle('selectIcon', () => {
-    return dialog.showOpenDialogSync({
+    const iconPath = dialog.showOpenDialogSync({
         title: 'Select Account Icon',
-        defaultPath: join(app.getPath("appData"), "../Local/Programs/TuffPass/icons"),
+        defaultPath: "/icons",
         filters: [{ name: 'Icons', extensions: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'icns', 'gif']}],
         properties: [
             'openFile',
         ]
     });
+    return iconPath.join("").split("TuffPass\\")[1];
 });
 
 ipcMain.handle('getAccounts', () => {
