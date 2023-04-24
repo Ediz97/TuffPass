@@ -4,7 +4,7 @@
   import { cubicOut } from "svelte/easing";
   import { onMount } from "svelte";
   import { fly, fade } from "svelte/transition";
-  import { passwordCorrect } from "./stores";
+  import { passwordCorrect, userAccounts } from "./stores";
 
   // svelte animation
   const passwordStrength = tweened(0, {
@@ -12,28 +12,36 @@
     easing: cubicOut,
   });
 
+  let firstRun = true;
   let applicationStarted = false;
-  let masterPassword = "";
   let newPassword = "";
   let newPasswordConfirmation = "";
-  let firstRun = true;
+  let masterPassword = {
+    masterPassword: ""
+  };
 
-  function createMasterPassword() {
+  async function createMasterPassword() {
     if (newPassword === newPasswordConfirmation) {
-      masterPassword = newPassword;
+      masterPassword.masterPassword = newPassword;
+      userAccounts.set([masterPassword]);
+      await window.electronAPI.updateAccounts([masterPassword]);
       passwordCorrect.set(true);
     }
   }
 
   function masterPasswordCheck() {
-    // if (hashed master password is true) { TODO: implement hashed master password check
-    passwordCorrect.set(true);
-    // }
+    for (let accountsStore of $userAccounts) {
+      if (accountsStore.masterPassword === masterPassword.masterPassword) {
+        passwordCorrect.set(true);
+        break;
+      }
+    }
   }
 
   onMount(async () => {
     applicationStarted = true; // set to true on startup, in order for the flying animation to work
     firstRun = (await window.electronAPI.getAccounts()) === null ? true : false;
+    userAccounts.set(await window.electronAPI.getAccounts());
   });
 </script>
 
@@ -98,7 +106,7 @@
           <input
             type="text"
             placeholder="Enter password"
-            bind:value={masterPassword}
+            bind:value={masterPassword.masterPassword}
             class="input input-bordered w-full"
           />
 
