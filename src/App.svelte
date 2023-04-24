@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { fade } from "svelte/transition";
   import AccountCards from "./lib/AccountCards.svelte";
   import NavigationBar from "./lib/NavigationBar.svelte";
   import { userAccounts, passwordCorrect } from "./lib/stores";
@@ -16,6 +17,7 @@
   {:else}
     {#if $userAccounts.length === 0}
       <div
+        transition:fade
         class="flex justify-center items-center absolute w-full text-center"
         style="height: calc(100vh - 20px)"
       >
@@ -24,7 +26,9 @@
         </p>
       </div>
     {/if}
-    <NavigationBar />
-    <AccountCards />
+    <div transition:fade>
+      <NavigationBar />
+      <AccountCards />
+    </div>
   {/if}
 </main>
