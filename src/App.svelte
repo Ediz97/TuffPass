@@ -15,7 +15,7 @@
   {#if !$passwordCorrect}
     <LoginScreen />
   {:else}
-    {#if $userAccounts.length === 1} <!-- check for 1 instead of 0, because the hashed master password is stored in the file -->
+    {#if $userAccounts.length === 0}
       <div
         transition:fade
         class="flex justify-center items-center absolute w-full text-center"

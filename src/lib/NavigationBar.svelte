@@ -5,15 +5,13 @@
   let searchPrompt = "";
 
   function filterCards() {
-    for (let i = 0; i < $userAccounts.length; i++) {
+    for (let userAccount of $userAccounts) {
       if (
-        !$userAccounts[i].cardName
-          .toLowerCase()
-          .includes(searchPrompt.toLowerCase())
+        !userAccount.cardName.toLowerCase().includes(searchPrompt.toLowerCase())
       ) {
-        $userAccounts[i].visible = false;
+        userAccount.visible = false;
       } else {
-        $userAccounts[i].visible = true;
+        userAccount.visible = true;
       }
     }
   }
