@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { join } = require('path');
-const { updateAccounts, getAccounts } = require('./file-io.cjs');
+const { updateAccounts, getAccounts, hash, firstRun, createFile } = require('./file-io.cjs');
 
 app.whenReady().then(main);
 
@@ -17,9 +17,7 @@ function main() {
             spellcheck: false
         },
     });
-
-    // win.webContents.openDevTools();
-
+    
     win.loadFile(join(__dirname, "../public/index.html"));
     win.on("ready-to-show", win.show);
 }
@@ -37,10 +35,22 @@ ipcMain.handle('selectIcon', () => {
     return iconPath.join("").split("TuffPass\\")[1];
 });
 
-ipcMain.handle('getAccounts', () => {
-    return getAccounts();
+ipcMain.handle('getAccounts', (event, key) => {
+    return getAccounts(key);
 });
 
-ipcMain.on('updateAccounts', (event, accounts) => {
-    updateAccounts(accounts);
+ipcMain.handle('updateAccounts', (event, accounts, AESKey) => {
+    return updateAccounts(accounts, AESKey);
 });
+
+ipcMain.handle('hash', (event, password) => {
+    return hash(password);
+})
+
+ipcMain.handle('firstRun', () => {
+    return firstRun();
+})
+
+ipcMain.handle('createFile', (event, masterPassword) => {
+    createFile(masterPassword);
+})

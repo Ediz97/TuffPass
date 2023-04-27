@@ -1,5 +1,5 @@
 <script>
-  import { userAccounts, createNewAccount } from "./stores";
+  import { userAccounts, createNewAccount, AESKey } from "./stores";
   import { passwordCheck, generatePassword } from "./PasswordCheck.svelte"
   import { tweened } from "svelte/motion";
 	import { cubicOut } from "svelte/easing";
@@ -42,14 +42,14 @@
         visible: true,
       });
     }
-    window.electronAPI.updateAccounts($userAccounts);
+    window.electronAPI.updateAccounts($userAccounts, $AESKey);
     $userAccounts = $userAccounts;
   }
 
   function removeAccount() {
     $userAccounts.splice(accountIndex, 1);
     $userAccounts = $userAccounts;
-    window.electronAPI.updateAccounts($userAccounts);
+    window.electronAPI.updateAccounts($userAccounts, $AESKey);
   }
 
   function resetModal() {

@@ -1,5 +1,5 @@
 <script>
-  import { userAccounts, createNewAccount } from "./stores";
+  import { userAccounts, createNewAccount, AESKey } from "./stores";
   import AccountsLifecycle from "./AccountsLifecycle.svelte";
   import { fade, fly } from 'svelte/transition';
   import { onMount } from "svelte";
@@ -11,7 +11,12 @@
   let userFeedback = false;
 
   onMount(async() => {
-    userAccounts.set(await window.electronAPI.getAccounts());
+    userAccounts.set(await window.electronAPI.getAccounts($AESKey));
+    for (let i = 0; i < $userAccounts.length; i++) {
+      if ('masterPassword' in $userAccounts[i]) {
+        $userAccounts.splice(i, 1); // splicing the master password object from the svelte store
+      }
+    }
   });
 
   function adoptAccountDetails() {
@@ -44,7 +49,7 @@
         }
       }
     }
-    window.electronAPI.updateAccounts($userAccounts);
+    window.electronAPI.updateAccounts($userAccounts, $AESKey);
   }
 
   function giveUserFeedback(string) {

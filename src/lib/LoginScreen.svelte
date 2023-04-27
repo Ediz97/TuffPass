@@ -4,7 +4,7 @@
   import { cubicOut } from "svelte/easing";
   import { onMount } from "svelte";
   import { fly, fade } from "svelte/transition";
-  import { passwordCorrect, userAccounts } from "./stores";
+  import { passwordCorrect, userAccounts, AESKey } from "./stores";
 
   // svelte animation
   const passwordStrength = tweened(0, {
@@ -16,32 +16,31 @@
   let applicationStarted = false;
   let newPassword = "";
   let newPasswordConfirmation = "";
-  let masterPassword = {
-    masterPassword: ""
-  };
+  let masterPassword = "";
 
-  async function createMasterPassword() {
-    if (newPassword === newPasswordConfirmation) {
-      masterPassword.masterPassword = newPassword;
-      userAccounts.set([masterPassword]);
-      await window.electronAPI.updateAccounts([masterPassword]);
-      passwordCorrect.set(true);
-    }
-  }
-
-  function masterPasswordCheck() {
+  async function masterPasswordCheck() {
+    userAccounts.set(await window.electronAPI.getAccounts(masterPassword));
     for (let accountsStore of $userAccounts) {
-      if (accountsStore.masterPassword === masterPassword.masterPassword) {
+      if (accountsStore.masterPassword === await window.electronAPI.hash(masterPassword)) {
+        AESKey.set(masterPassword);
         passwordCorrect.set(true);
         break;
       }
     }
   }
 
+  async function createMasterPassword() {
+    if (newPassword === newPasswordConfirmation) {
+      await window.electronAPI.createFile(newPassword);
+      AESKey.set(newPassword); // necessary to encrypt and decrypt account passwords
+      userAccounts.set(await window.electronAPI.getAccounts(newPassword));
+      passwordCorrect.set(true);
+    }
+  }
+
   onMount(async () => {
     applicationStarted = true; // set to true on startup, in order for the flying animation to work
-    firstRun = (await window.electronAPI.getAccounts()) === null ? true : false;
-    userAccounts.set(await window.electronAPI.getAccounts());
+    firstRun = await window.electronAPI.firstRun() === null ? true : false;
   });
 </script>
 
@@ -106,7 +105,7 @@
           <input
             type="text"
             placeholder="Enter password"
-            bind:value={masterPassword.masterPassword}
+            bind:value={masterPassword}
             class="input input-bordered w-full"
           />
 
