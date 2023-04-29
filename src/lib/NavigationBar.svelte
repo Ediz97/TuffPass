@@ -14,7 +14,9 @@
         userAccount.visible = true;
       }
     }
+    $userAccounts = $userAccounts;
   }
+
 </script>
 
 <div class="mx-3 py-5">
