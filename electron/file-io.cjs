@@ -1,15 +1,16 @@
-const { app } = require("electron");
+const { app, dialog} = require("electron");
 const fs = require("fs");
+const isDev = require("electron-is-dev");
 const path = require("path");
 const CryptoJS = require("crypto-js");
 const SHA256 = require("crypto-js/sha256");
 const Base64 = require("crypto-js/enc-base64");
+const { join} = require("path");
 
 const salt = "@Yh7>hX}ew3hy3";
-const userAccountsFile = path.join(
-  app.getPath("appData"),
-  "../Local/Programs/TuffPass/userAccounts.json"
-);
+const userAccountsFile = isDev ?
+    path.join(app.getAppPath(), "userAccounts.json") :
+    path.join(app.getAppPath(), "../../userAccounts.json");
 
 function hashMasterPassword(password) {
   return Base64.stringify(SHA256(salt + password));
@@ -55,4 +56,16 @@ module.exports.firstRun = () => {
 
 module.exports.createFile = (masterPassword) => {
   fs.writeFileSync(userAccountsFile, JSON.stringify([{masterPassword: hashMasterPassword(masterPassword)}]));
+}
+
+module.exports.getIconPath = () => {
+  const iconPath = dialog.showOpenDialogSync({
+    title: 'Select Account Icon',
+    defaultPath: isDev ? join(app.getAppPath() + "/public/icons") : join(app.getAppPath() + "../../../icons"),
+    filters: [{ name: 'Icons', extensions: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'icns', 'gif']}],
+    properties: [
+      'openFile',
+    ]
+  }).join("").split("TuffPass\\")[1];
+  return isDev ? join("../" + iconPath) : join("../../../" + iconPath);
 }
