@@ -22,8 +22,9 @@
   let amountPasswordWasIncorrect = 0;
   let passwordUnlockCounter = 10;
   let passwordLockInterval;
+  let inputFieldPassword;
 
-  $: if (amountPasswordWasIncorrect === 3) {
+  $: if (amountPasswordWasIncorrect === 5) {
     lockInput();
   }
 
@@ -50,6 +51,10 @@
 
   function submit(event) {
     event.key === "Enter" ? masterPasswordCheck() : null;
+  }
+
+  function hidePasswordInput() {
+    inputFieldPassword.type = masterPassword.length > 0 ? "password" : "text";
   }
 
   async function masterPasswordCheck() {
@@ -145,17 +150,16 @@
             <h1 class="text-5xl font-bold">Welcome back!</h1>
             <p class="py-6">Please enter your master password.</p>
 
-            <!-- Password Fields -->
-            <label class="label mt-2" for="password">
-              <span class="label-text ml-1">Password</span>
-            </label>
+            <!-- Password Field -->
             <input
               type="text"
               autofocus
               placeholder="Enter password"
               bind:value={masterPassword}
+              bind:this={inputFieldPassword}
               class="input input-bordered w-full"
               on:keydown={submit}
+              on:input={hidePasswordInput}
             />
 
             <button class="btn btn-success mt-10" on:click={masterPasswordCheck}
