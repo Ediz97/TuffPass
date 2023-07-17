@@ -30,6 +30,7 @@
       <div class="input-group pr-5">
         <input
           type="text"
+          autofocus
           placeholder="Search…"
           class="input input-ghost input-bordered border-2 w-full"
           bind:value={searchPrompt}
