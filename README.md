@@ -5,10 +5,10 @@ TuffPass is an offline password manager for Windows, which is trying to keep its
 
 # How to install
 
-### Recommended way
+#### Recommended way
 Download and run the latest `TuffPass.Setup.1.x.x.exe` in the [Releases](https://github.com/Ediz97/TuffPass/releases) section under `Assets`.
 
-### Compiling on your own ([Node.js](https://nodejs.org/en) required)
+#### Compiling on your own ([Node.js](https://nodejs.org/en) required)
 1. Clone or download the repository
 2. In the CLI, navigate to the root folder of TuffPass
 3. Enter `npm install`
