@@ -17,14 +17,56 @@
   let newPassword = "";
   let newPasswordConfirmation = "";
   let masterPassword = "";
+  let notification = " ";
+  let passwordLock = false;
+  let amountPasswordWasIncorrect = 0;
+  let passwordUnlockCounter = 10;
+  let passwordLockInterval;
+
+  $: if (amountPasswordWasIncorrect === 3) {
+    lockInput();
+  }
+
+  $: if (passwordUnlockCounter === 0) {
+    unlockInput();
+  }
+
+  function lockInput() {
+    passwordLock = true;
+    notification = `Password incorrect too many times. Please wait ${passwordUnlockCounter} seconds before trying again.`;
+    passwordLockInterval = setInterval(() => {
+      passwordUnlockCounter--;
+      notification = `Password incorrect too many times. Please wait ${passwordUnlockCounter} seconds before trying again.`;
+    }, 1000);
+  }
+
+  function unlockInput() {
+    clearInterval(passwordLockInterval);
+    notification = "";
+    passwordLock = false;
+    amountPasswordWasIncorrect = 0;
+    passwordUnlockCounter = 10;
+  }
+
+  function submit(event) {
+    event.key === "Enter" ? masterPasswordCheck() : null;
+  }
 
   async function masterPasswordCheck() {
-    userAccounts.set(await window.electronAPI.getAccounts(masterPassword));
-    for (let accountsStore of $userAccounts) {
-      if (accountsStore.masterPassword === await window.electronAPI.hash(masterPassword)) {
-        AESKey.set(masterPassword);
-        passwordCorrect.set(true);
-        break;
+    if (!passwordLock) {
+      userAccounts.set(await window.electronAPI.getAccounts(masterPassword));
+      for (let accountsStore of $userAccounts) {
+        if (
+          accountsStore.masterPassword ===
+          (await window.electronAPI.hash(masterPassword))
+        ) {
+          AESKey.set(masterPassword);
+          passwordCorrect.set(true);
+          break;
+        } else {
+          notification = "The password is incorrect.";
+          amountPasswordWasIncorrect++;
+        }
       }
     }
   }
@@ -35,12 +77,15 @@
       AESKey.set(newPassword); // necessary to encrypt and decrypt account passwords
       userAccounts.set(await window.electronAPI.getAccounts(newPassword));
       passwordCorrect.set(true);
+    } else {
+      notification = "The passwords do not match.";
     }
   }
 
   onMount(async () => {
     applicationStarted = true; // set to true on startup, in order for the flying animation to work
-    firstRun = await window.electronAPI.firstRun() === null ? true : false;
+    firstRun = (await window.electronAPI.firstRun()) === null ? true : false;
+    masterPassword.focus();
   });
 </script>
 
@@ -68,6 +113,7 @@
           </label>
           <input
             type="text"
+            autofocus
             placeholder="Enter password"
             bind:value={newPassword}
             on:input={() => passwordStrength.set(passwordCheck(newPassword)[0])}
@@ -95,23 +141,31 @@
             >Confirm</button
           >
         {:else}
-          <h1 class="text-5xl font-bold">Welcome back!</h1>
-          <p class="py-6">Please enter your master password.</p>
+          <div>
+            <h1 class="text-5xl font-bold">Welcome back!</h1>
+            <p class="py-6">Please enter your master password.</p>
 
-          <!-- Password Fields -->
-          <label class="label mt-2" for="password">
-            <span class="label-text ml-1">Password</span>
-          </label>
-          <input
-            type="text"
-            placeholder="Enter password"
-            bind:value={masterPassword}
-            class="input input-bordered w-full"
-          />
+            <!-- Password Fields -->
+            <label class="label mt-2" for="password">
+              <span class="label-text ml-1">Password</span>
+            </label>
+            <input
+              type="text"
+              autofocus
+              placeholder="Enter password"
+              bind:value={masterPassword}
+              class="input input-bordered w-full"
+              on:keydown={submit}
+            />
 
-          <button class="btn btn-success mt-10" on:click={masterPasswordCheck}
-            >Confirm</button
-          >
+            <button class="btn btn-success mt-10" on:click={masterPasswordCheck}
+              >Confirm</button
+            >
+
+            <p class="absolute pt-5 left-0 right-0 mx-auto text-error">
+              {notification}
+            </p>
+          </div>
         {/if}
       </div>
     </div>
